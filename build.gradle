@@ -1,5 +1,5 @@
 description = 'Signs artifacts using a keystore file'
-group = 'com.github.jazzschmidt'
+group = 'com.github.jazzschmidt.gradle'
 
 apply plugin: 'groovy'
 
