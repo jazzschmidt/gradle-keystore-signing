@@ -7,17 +7,21 @@ import spock.lang.Specification
 class KeystoreSigningPluginSpec extends Specification {
 
     def 'adds a signing task to the project'() {
-        when:
+        given: 'a project'
         Project project = ProjectBuilder.builder().build()
+
+        when: 'applying the plugin'
         project.pluginManager.apply(KeystoreSigningPlugin)
 
-        then:
+        then: 'the signing task is added'
         project.tasks.findByName('signing') != null
     }
 
     def 'adds a configuration for artifacts to the project'() {
-        when:
+        given: 'a project'
         Project project = ProjectBuilder.builder().build()
+
+        when:
         project.pluginManager.apply(KeystoreSigningPlugin)
 
         then:
