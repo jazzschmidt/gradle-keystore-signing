@@ -8,6 +8,15 @@ repositories {
     mavenCentral()
 }
 
+gradlePlugin {
+    plugins {
+        KeystoreSigningPlugin {
+            id = 'com.github.jazzschmidt.gradle.keystoresigning'
+            implementationClass = 'com.github.jazzschmidt.gradle.keystoresigning.KeystoreSigningPlugin'
+        }
+    }
+}
+
 dependencies {
     compile gradleApi()
     compile localGroovy()
