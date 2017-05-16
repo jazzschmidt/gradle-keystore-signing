@@ -49,10 +49,9 @@ class SigningTaskSpec extends Specification {
         when: 'signing task is run'
         def result = gradleRunner
                 .withArguments('signArchives')
-                .build()
+                .buildAndFail()
 
         then:
-        println(result.output)
         result.task(':signArchives').outcome == TaskOutcome.FAILED
     }
 
