@@ -14,7 +14,7 @@ class KeystoreSigningPluginSpec extends Specification {
         project.pluginManager.apply(KeystoreSigningPlugin)
 
         then: 'the signing task is added'
-        project.tasks.findByName('signing') != null
+        project.tasks.signing instanceof SigningTask
     }
 
     def 'adds a configuration for artifacts to the project'() {
