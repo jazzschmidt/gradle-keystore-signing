@@ -2,6 +2,7 @@ description = 'Signs artifacts using a keystore file'
 group = 'com.github.jazzschmidt.gradle'
 
 apply plugin: 'groovy'
+apply plugin: 'java-gradle-plugin'
 
 repositories {
     mavenCentral()
