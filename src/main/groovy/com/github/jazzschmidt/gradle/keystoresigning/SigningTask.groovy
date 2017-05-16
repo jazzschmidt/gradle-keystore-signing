@@ -6,7 +6,7 @@ import org.gradle.api.tasks.OutputFiles
 import org.gradle.api.tasks.SkipWhenEmpty
 import org.gradle.api.tasks.TaskAction
 
-class SigningTask extends DefaultTask {
+class SigningTask extends DefaultTask implements KeystoreSigningConfiguration {
 
     @InputFiles
     @SkipWhenEmpty
@@ -19,4 +19,5 @@ class SigningTask extends DefaultTask {
     void signArchives() {
         logger.info('Signing archives...')
     }
+
 }

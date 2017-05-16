@@ -1,6 +1,6 @@
 package com.github.jazzschmidt.gradle.keystoresigning
 
-class KeystoreSigningExtension {
+trait KeystoreSigningConfiguration {
     File keystore
     String alias
     String password
