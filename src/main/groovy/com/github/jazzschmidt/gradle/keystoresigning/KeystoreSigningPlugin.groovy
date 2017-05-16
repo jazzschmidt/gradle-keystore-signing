@@ -7,7 +7,7 @@ class KeystoreSigningPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        def task = project.tasks.create('signing', SigningTask)
+        project.tasks.create('signing', SigningTask)
         project.configurations.create('signedArchives')
     }
 }
