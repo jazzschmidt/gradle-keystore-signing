@@ -26,30 +26,34 @@ class SigningTaskSpec extends Specification {
 
         when: 'signing task is run'
         def result = gradleRunner
-                .withArguments('signing')
+                .withArguments('signArchives')
                 .build()
 
         then:
-        result.task(':signing').outcome == TaskOutcome.NO_SOURCE
+        result.task(':signArchives').outcome == TaskOutcome.NO_SOURCE
     }
 
     def 'fails when no keystore is configured'() {
         given: 'a build script with archives but no keystore'
         buildFile << '''
         plugins {
-            id 'java'
             id 'com.github.jazzschmidt.gradle.keystoresigning'
         }
+
+        signArchives {
+            archives = [file('no.file')]
+        }
+
         '''
 
         when: 'signing task is run'
         def result = gradleRunner
-                .withArguments('signing')
+                .withArguments('signArchives')
                 .build()
 
         then:
         println(result.output)
-        result.task(':signing').outcome == TaskOutcome.FAILED
+        result.task(':signArchives').outcome == TaskOutcome.FAILED
     }
 
     GradleRunner getGradleRunner() {
