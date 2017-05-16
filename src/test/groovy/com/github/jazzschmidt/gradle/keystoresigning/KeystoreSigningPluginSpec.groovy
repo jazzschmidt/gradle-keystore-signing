@@ -28,4 +28,15 @@ class KeystoreSigningPluginSpec extends Specification {
         project.configurations.findByName('signedArchives') != null
     }
 
+    def 'adds a signing extension to the project'() {
+        given: 'a project'
+        Project project = ProjectBuilder.builder().build()
+
+        when:
+        project.pluginManager.apply(KeystoreSigningPlugin)
+
+        then:
+        project.extensions.findByName('signing') != null
+    }
+
 }
