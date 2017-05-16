@@ -6,7 +6,7 @@ import spock.lang.Specification
 
 class KeystoreSigningPluginSpec extends Specification {
 
-    def 'adds a signing task to the project'() {
+    def 'adds a task, a configuration, and an extension to the project'() {
         given: 'a project'
         Project project = ProjectBuilder.builder().build()
 
@@ -14,29 +14,13 @@ class KeystoreSigningPluginSpec extends Specification {
         project.pluginManager.apply(KeystoreSigningPlugin)
 
         then: 'the signing task is added'
-        project.tasks.signing instanceof SigningTask
-    }
+        project.tasks.signArchives instanceof SigningTask
 
-    def 'adds a configuration for artifacts to the project'() {
-        given: 'a project'
-        Project project = ProjectBuilder.builder().build()
+        and: 'a configuration for artifacts is added'
+        project.configurations.getByName('signedArchives')
 
-        when:
-        project.pluginManager.apply(KeystoreSigningPlugin)
-
-        then:
-        project.configurations.findByName('signedArchives') != null
-    }
-
-    def 'adds a signing extension to the project'() {
-        given: 'a project'
-        Project project = ProjectBuilder.builder().build()
-
-        when:
-        project.pluginManager.apply(KeystoreSigningPlugin)
-
-        then:
-        project.extensions.findByName('signing') != null
+        and: 'a configuration extension is added'
+        project.extensions.getByName('signing')
     }
 
 }
