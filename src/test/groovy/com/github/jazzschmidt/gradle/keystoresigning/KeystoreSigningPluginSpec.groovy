@@ -23,4 +23,24 @@ class KeystoreSigningPluginSpec extends Specification {
         project.extensions.getByName('signing')
     }
 
+    def 'configures the extension with project properties'() {
+        given: 'a project'
+        Project project = ProjectBuilder.builder().build()
+
+        and: 'the signing properties'
+        project.ext.'keystoresigning.keystore' = 'test'
+        project.ext.'keystoresigning.alias' = 'alias'
+        project.ext.'keystoresigning.password' = 'secret'
+
+        when: 'applying the plugin'
+        project.pluginManager.apply(KeystoreSigningPlugin)
+
+        then: 'the properties are applied to the extension'
+        def extension = project.extensions.getByName('signing')
+
+        extension.keystore == project.file('test')
+        extension.alias == 'alias'
+        extension.password == 'secret'
+    }
+
 }
