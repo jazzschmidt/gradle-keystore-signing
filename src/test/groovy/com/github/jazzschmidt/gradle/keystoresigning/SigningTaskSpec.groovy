@@ -41,7 +41,7 @@ class SigningTaskSpec extends Specification {
         }
 
         signArchives {
-            archives = [file('no.file')]
+            sign file('no.file')
         }
 
         '''

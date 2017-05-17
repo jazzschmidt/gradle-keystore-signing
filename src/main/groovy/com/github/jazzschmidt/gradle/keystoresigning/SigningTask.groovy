@@ -11,10 +11,10 @@ class SigningTask extends DefaultTask implements KeystoreSigningConfiguration {
 
     @InputFiles
     @SkipWhenEmpty
-    Set<File> archives = new HashSet<>()
+    final Set<File> archives = new HashSet<>()
 
     @OutputFiles
-    Set<File> signedArchives = new HashSet<>()
+    final Set<File> signedArchives = new HashSet<>()
 
     @TaskAction
     void signArchives() {
@@ -23,6 +23,10 @@ class SigningTask extends DefaultTask implements KeystoreSigningConfiguration {
         }
 
         logger.info('Signing archives...')
+    }
+
+    void sign(File file) {
+        archives.add(file)
     }
 
 }
