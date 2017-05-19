@@ -73,6 +73,18 @@ class SigningTaskSpec extends Specification {
         signArchives {
             sign file('no.file')
         }
+
+        task('verify') {
+            doLast {
+                if (
+                    signing.keystore != file('keystore.jks') ||
+                    signing.alias != 'alias' ||
+                    signing.password != 'secret'
+                ) {
+                    throw new GradleException()
+                }
+            }
+        }
         '''
 
         and: 'a keystore'
@@ -80,11 +92,11 @@ class SigningTaskSpec extends Specification {
 
         when: 'signing task is run'
         def result = gradleRunner
-                .withArguments('signArchives')
+                .withArguments('verify')
                 .build()
 
         then:
-        result.task(':signArchives').properties.equals(alias: 'alias', password: 'secret')
+        result.task(':verify').outcome == TaskOutcome.SUCCESS
     }
 
     KeyStore createKeystore(String filename, String password) {
