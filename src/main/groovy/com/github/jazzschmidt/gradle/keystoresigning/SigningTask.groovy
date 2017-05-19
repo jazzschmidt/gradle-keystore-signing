@@ -2,6 +2,7 @@ package com.github.jazzschmidt.gradle.keystoresigning
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
+import org.gradle.api.InvalidUserDataException
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputFiles
 import org.gradle.api.tasks.SkipWhenEmpty
@@ -24,8 +25,10 @@ class SigningTask extends DefaultTask implements KeystoreSigningConfiguration {
     }
 
     private void validate() {
-        if (!keystore || !keystore.exists()) {
-            throw new GradleException("Keystore could not be found")
+        if (!keystore) {
+            throw new InvalidUserDataException('No keystore is configured')
+        } else if(!keystore.exists()) {
+            throw new InvalidUserDataException("Keystore does not exist: ${keystore.absolutePath}")
         }
     }
 
