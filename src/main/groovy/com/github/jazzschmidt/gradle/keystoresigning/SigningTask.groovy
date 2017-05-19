@@ -18,11 +18,15 @@ class SigningTask extends DefaultTask implements KeystoreSigningConfiguration {
 
     @TaskAction
     void signArchives() {
-        if(!keystore || !keystore.exists()) {
-            throw new GradleException("Keystore could not be found")
-        }
+        validate()
 
         logger.info('Signing archives...')
+    }
+
+    private void validate() {
+        if (!keystore || !keystore.exists()) {
+            throw new GradleException("Keystore could not be found")
+        }
     }
 
     void sign(File file) {
