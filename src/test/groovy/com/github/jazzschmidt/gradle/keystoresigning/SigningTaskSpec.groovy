@@ -6,6 +6,8 @@ import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
+import java.security.KeyStore
+
 class SigningTaskSpec extends Specification {
 
     @Rule
@@ -53,6 +55,46 @@ class SigningTaskSpec extends Specification {
 
         then:
         result.task(':signArchives').outcome == TaskOutcome.FAILED
+    }
+
+    def 'configures the task from the extension'() {
+        given: 'a build script with the extension being configured explicitly'
+        buildFile << '''
+        plugins {
+            id 'com.github.jazzschmidt.gradle.keystoresigning'
+        }
+
+        signing {
+            keystore = file('keystore.jks')
+            alias = 'alias'
+            password = 'secret'
+        }
+
+        signArchives {
+            sign file('no.file')
+        }
+        '''
+
+        and: 'a keystore'
+        def keystore = createKeystore('keystore.jks', 'secret')
+
+        when: 'signing task is run'
+        def result = gradleRunner
+                .withArguments('signArchives')
+                .build()
+
+        then:
+        result.task(':signArchives').properties.equals(alias: 'alias', password: 'secret')
+    }
+
+    KeyStore createKeystore(String filename, String password) {
+        def keystore = KeyStore.getInstance(KeyStore.defaultType)
+
+        keystore.load(null, password as char[])
+        def outputStream = new FileOutputStream(projectDir.newFile(filename))
+        keystore.store(outputStream, password as char[])
+
+        return keystore
     }
 
     GradleRunner getGradleRunner() {
