@@ -19,6 +19,14 @@ class KeystoreSigningPlugin implements Plugin<Project> {
 
         def extension = createExtensionFromProperties(project)
         project.extensions.add(Extension.EXTENSION_NAME, extension)
+
+        project.afterEvaluate {
+            project.tasks.withType(SigningTask) {
+                keystore = extension.keystore
+                alias = extension.alias
+                password = extension.password
+            }
+        }
     }
 
     private Extension createExtensionFromProperties(Project project) {
