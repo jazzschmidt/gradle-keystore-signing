@@ -28,9 +28,11 @@ class KeystoreSigningPlugin implements Plugin<Project> {
             }
 
             task.configure {
-                def archives = project.configurations.findByName('archives')
-                if (archives) {
-                    sign archives
+                if(archives.isEmpty()) {
+                    def configuration = project.configurations.findByName('archives')
+                    if (configuration) {
+                        sign configuration
+                    }
                 }
             }
         }
