@@ -99,6 +99,41 @@ class SigningTaskSpec extends Specification {
         result.task(':verify').outcome == TaskOutcome.SUCCESS
     }
 
+    def 'signs the archives configuration'() {
+        given: 'a build script with an archives configuration'
+        buildFile << '''
+        plugins {
+            id 'com.github.jazzschmidt.gradle.keystoresigning'
+        }
+
+        configurations {
+            archives
+        }
+
+        artifacts {
+            archives file('archive.zip')
+        }
+
+        task('verify') {
+            doLast {
+                if(tasks.signArchives.archives.isEmpty())
+                    throw new GradleException()
+            }
+        }
+        '''
+
+        and: 'an archive'
+        projectDir.newFile('archive.zip')
+
+        when: 'signing task is run'
+        def result = gradleRunner
+                .withArguments('verify')
+                .build()
+
+        then:
+        result.task(':verify').outcome == TaskOutcome.SUCCESS
+    }
+
     KeyStore createKeystore(String filename, String password) {
         def keystore = KeyStore.getInstance(KeyStore.defaultType)
 
