@@ -106,24 +106,21 @@ class SigningTaskSpec extends Specification {
             id 'com.github.jazzschmidt.gradle.keystoresigning'
         }
 
-        configurations {
-            archives
-        }
+        configurations { archives }
+
+        def archive = file('archive.zip')
 
         artifacts {
-            archives file('archive.zip')
+            archives (archive)
         }
 
         task('verify') {
             doLast {
-                if(tasks.signArchives.archives.isEmpty())
+                if(!tasks.signArchives.archives.contains(archive))
                     throw new GradleException()
             }
         }
         '''
-
-        and: 'an archive'
-        projectDir.newFile('archive.zip')
 
         when: 'signing task is run'
         def result = gradleRunner

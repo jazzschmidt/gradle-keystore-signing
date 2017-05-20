@@ -26,6 +26,13 @@ class KeystoreSigningPlugin implements Plugin<Project> {
                 alias = extension.alias
                 password = extension.password
             }
+
+            task.configure {
+                def archives = project.configurations.findByName('archives')
+                if (archives) {
+                    sign archives
+                }
+            }
         }
     }
 
